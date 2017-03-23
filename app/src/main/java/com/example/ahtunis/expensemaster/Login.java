@@ -46,29 +46,28 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+        if (userName != null && password != null) {
+            userNameTxt = userName.getText().toString();
+            passwordTxt = password.getText().toString();
 
-                String userNameTxt = userName.getText().toString();
-                String passwordTxt = password.getText().toString();
+            if (userNameTxt.isEmpty()) {
+                userName.setError("A Username is required!");
+            }
 
-                if(userNameTxt.isEmpty())
-                {
-                    userName.setError("A Username is required!");
-                }
+            if (passwordTxt.isEmpty()) {
+                password.setError("A Password is required!");
+            }
 
-                if(passwordTxt.isEmpty())
-                {
-                    password.setError("A Password is required!");
-                }
+            Intent i = new Intent(getApplicationContext(), Selection.class);
+            //i.putExtra("userName", userNameTxt);
+            //i.putExtra("password", passwordTxt);
+            //startActivity(i);
 
-                Intent i = new Intent(getApplicationContext(), Selection.class);
-                //i.putExtra("userName", userNameTxt);
-                //i.putExtra("password", passwordTxt);
-                //startActivity(i);
-
-                // Checks to see if information is valid
-                // Runs in background thread !!!!!!!!!!!!!!!!!!!!
-                new Background().execute(userNameTxt, passwordTxt);;
-                //b.execute(userNameTxt, passwordTxt);
+            // Checks to see if information is valid
+            // Runs in background thread !!!!!!!!!!!!!!!!!!!!
+            new Background().execute(userNameTxt, passwordTxt);
+            //b.execute(userNameTxt, passwordTxt);
+        }
             }
         });
     }
@@ -115,7 +114,7 @@ public class Login extends AppCompatActivity {
 
                 // implement SSL
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
+                connection.setRequestMethod("POST");
                 //connection.setDoOutput(true);
                 OutputStream os = connection.getOutputStream();
                 os.write(urlParams.getBytes());
@@ -166,21 +165,22 @@ public class Login extends AppCompatActivity {
             }
 
             // Make sure they are valid credentials
-            //if (userNameTxt.equals(actualUserId)  && passwordTxt.equals(actualPass))
-            //{
+
+            if (actualUserId != null && actualPass != null && userNameTxt.equals(actualUserId)  && passwordTxt.equals(actualPass))
+            {
                 // Naviate to new page
                 Intent mainPage = new Intent(Login.this, Selection.class);
-                mainPage.putExtra("username", actualUser);
+                mainPage.putExtra("userName", actualUser);
                 mainPage.putExtra("password", actualPass);
                 //mainPage.putExtra("error", err);
                 startActivity(mainPage);
-           // }
-            //else{
-                // Show invaid login attempt
-                //Toast toast = Toast.makeText(getApplicationContext(), "Invalid login credentials!", Toast.LENGTH_LONG);
-                //toast.show();
+            }
+            else{
+                 // Show invaid login attempt
+                Toast toast = Toast.makeText(getApplicationContext(), "Invalid login credentials!", Toast.LENGTH_LONG);
+                toast.show();
 
-            //}
+            }
 
 
         }

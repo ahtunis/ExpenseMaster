@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class Selection extends AppCompatActivity {
     String passwordString;
-    String username;
+    String usernameString;
     String businessId;
     String error;
 
@@ -35,18 +35,18 @@ public class Selection extends AppCompatActivity {
         logOut = (Button) findViewById(R.id.logoutBtn);
 
         userIdTxt = (TextView) findViewById(R.id.userId);
-        usernameTxt = (TextView) findViewById(R.id.userName);
-        password = (TextView) findViewById(R.id.password);
-        err = (TextView) findViewById(R.id.error);
+        //usernameTxt = (TextView) findViewById(R.id.userName);
+        //password = (TextView) findViewById(R.id.passWord);
+        //err = (TextView) findViewById(R.id.error);
 
 
         Intent i = getIntent();
         passwordString = i.getStringExtra("password");
-        username = i.getStringExtra("userName");
-        //businessId = i.getStringExtra("businessId");
-        //error = i.getStringExtra("error");
-        userIdTxt.setText(passwordString);
-        password.setText(username);
+        usernameString = i.getStringExtra("userName");
+
+
+        userIdTxt.setText(usernameString);
+       // password.setText(passwordString);
 
         // possibly used saved instance
 //        if (savedInstanceState != null){
