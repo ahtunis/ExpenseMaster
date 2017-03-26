@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import java.io.File;
 
+/// Class to upload individua expenses
 public class UploadIndividualExpense extends AppCompatActivity {
 
     ImageView picture;
