@@ -45,11 +45,13 @@ public class UploadIndividualExpense extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+
+                    initializeTakePictureIntent();
                     // take picture
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File file = getFile();
-                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                 //   startActivityForResult(cameraIntent, 1337);
+//                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    File file = getFile();
+//                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+//                    startActivityForResult(cameraIntent, 1337);
                     //startActivityForResult(cameraIntent, CAM_REQUEST);
 
 
@@ -83,8 +85,8 @@ public class UploadIndividualExpense extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
 
-        String path = "sdcard/camera_app/cam_image.jpg";
-        picture.setImageDrawable(Drawable.createFromPath(path));
+        //String path = "sdcard/camera_app/cam_image.jpg";
+        //picture.setImageBitmap(Drawable.createFromPath(path));
     }
 
     private void initializeTakePictureIntent(){
@@ -92,7 +94,7 @@ public class UploadIndividualExpense extends AppCompatActivity {
 
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (pictureIntent.resolveActivity(getPackageManager()) != null){
-        //startActivityForResult(pictureIntent, 1, REQUEST_IMAGE_CAPTURE);
+        startActivityForResult(pictureIntent, 1);
 
         }
     }

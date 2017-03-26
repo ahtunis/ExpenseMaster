@@ -58,15 +58,19 @@ public class Login extends AppCompatActivity {
                 password.setError("A Password is required!");
             }
 
-            Intent i = new Intent(getApplicationContext(), Selection.class);
+            //Test running on phone not emulator
+            startActivity(new Intent(Login.this, Selection.class));
+
+
+            //Intent i = new Intent(getApplicationContext(), Selection.class);
             //i.putExtra("userName", userNameTxt);
             //i.putExtra("password", passwordTxt);
             //startActivity(i);
 
-            // Checks to see if information is valid
+
             // Runs in background thread !!!!!!!!!!!!!!!!!!!!
-            new Background().execute(userNameTxt, passwordTxt);
-            //b.execute(userNameTxt, passwordTxt);
+            //new Background().execute(userNameTxt, passwordTxt);
+
         }
             }
         });
