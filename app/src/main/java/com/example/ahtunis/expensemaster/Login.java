@@ -1,7 +1,12 @@
 package com.example.ahtunis.expensemaster;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,8 +37,12 @@ public class Login extends AppCompatActivity {
     String userNameTxt;
     String passwordTxt;
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
+
+        // Check if permissions are available
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -74,6 +83,16 @@ public class Login extends AppCompatActivity {
         }
             }
         });
+
+        }
+        else{
+            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                Toast.makeText(this,
+                        "Need external storage", Toast.LENGTH_LONG).show();
+            }
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
+
+        }
     }
 
     public void OnClickHere() {
