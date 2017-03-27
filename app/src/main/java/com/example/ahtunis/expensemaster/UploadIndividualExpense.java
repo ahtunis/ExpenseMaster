@@ -1,5 +1,8 @@
 package com.example.ahtunis.expensemaster;
 
+import  com.example.ahtunis.expensemaster.UploadPicture;
+
+
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -7,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
@@ -36,6 +40,7 @@ public class UploadIndividualExpense extends AppCompatActivity {
     ImageView picture;
     Button capture;
     Button upload;
+    Button captureCenter;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     String mCurrentPhotoPath;
@@ -49,13 +54,11 @@ public class UploadIndividualExpense extends AppCompatActivity {
 
         capture = (Button) findViewById(R.id.captureBtn);
         upload = (Button) findViewById(R.id.uploadPicture);
+        captureCenter = (Button) findViewById(R.id.capture1) ;
 
         upload.setVisibility(View.GONE);
+        capture.setVisibility(View.GONE);
         picture = (ImageView)findViewById(R.id.pictureView);
-
-
-
-
     }
 
     public void takePhoto(View view){
@@ -64,23 +67,32 @@ public class UploadIndividualExpense extends AppCompatActivity {
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        switch (requestCode){
 
-            case REQUEST_IMAGE_CAPTURE:
-                if (grantResults.length >  0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    // Go to camera intent if available
-                    dispatchTakePictureIntent();
-                }
-                else{
-                        Toast.makeText(this, "External write permission has not been granted", Toast.LENGTH_LONG).show();
-                    }
-                }
+    // UPload the picture to website api
+    public void uploadPicture(View v){
+
+        // Will need to get other information from Intent to properly upload picture to db/ server
+        Bitmap expensePic;
+
+        expensePic = ((BitmapDrawable)picture.getDrawable()).getBitmap();
+
+
+        if (expensePic != null){
+            if(UploadPicture.UploadBitmapToExpenseMaster(expensePic)){
+
+                startActivity(new Intent(this, ViewExpenses.class));
+            }
+
+        }
+        else{
+            Toast.makeText(this, "There was a problem with your image. Please attempt to take a new picture and upload.", Toast.LENGTH_LONG);
+        }
+
     }
 
 
+    /// perhaps save the picture if needed. Good implementation of what would be needed
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -115,11 +127,11 @@ public class UploadIndividualExpense extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
             Bundle extras = data.getExtras();
-            //extras = getIntent().getExtras();
-
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
             upload.setVisibility(View.VISIBLE);
+            capture.setVisibility(View.VISIBLE);
+            captureCenter.setVisibility(View.GONE);
             capture.setText("RETAKE");
 
             // We could upload image directly to php
