@@ -35,6 +35,7 @@ public class UploadIndividualExpense extends AppCompatActivity {
 
     ImageView picture;
     Button capture;
+    Button upload;
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     String mCurrentPhotoPath;
@@ -47,17 +48,14 @@ public class UploadIndividualExpense extends AppCompatActivity {
         setContentView(R.layout.activity_upload_individual_expense);
 
         capture = (Button) findViewById(R.id.captureBtn);
+        upload = (Button) findViewById(R.id.uploadPicture);
+
+        upload.setVisibility(View.GONE);
         picture = (ImageView)findViewById(R.id.pictureView);
 
 
-//        capture.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-//            }
-//        });
+
+
     }
 
     public void takePhoto(View view){
@@ -120,7 +118,14 @@ public class UploadIndividualExpense extends AppCompatActivity {
             //extras = getIntent().getExtras();
 
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+            upload.setVisibility(View.VISIBLE);
+            capture.setText("RETAKE");
+
+            // We could upload image directly to php
             picture.setImageBitmap(imageBitmap);
+
+
         }
     }
 
