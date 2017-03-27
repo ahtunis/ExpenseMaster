@@ -26,6 +26,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -46,27 +47,23 @@ public class UploadIndividualExpense extends AppCompatActivity {
         setContentView(R.layout.activity_upload_individual_expense);
 
         capture = (Button) findViewById(R.id.captureBtn);
-        picture = (ImageView)findViewById(R.id.imageView1);
+        picture = (ImageView)findViewById(R.id.pictureView);
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            dispatchTakePictureIntent();
-        }
-        else{
-            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                Toast.makeText(this,
-                        "Need external storage", Toast.LENGTH_LONG).show();
-            }
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
-                    REQUEST_IMAGE_CAPTURE);
 
-        }
+//        capture.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//            }
+//        });
+    }
 
-        capture.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+    public void takePhoto(View view){
 
-                }
-        });
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
     @Override
@@ -98,6 +95,13 @@ public class UploadIndividualExpense extends AppCompatActivity {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
+
+                if (hasImageCaptureBug()) {
+                    takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File("/sdcard/tmp")));
+                } else {
+                    takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                }
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -111,7 +115,10 @@ public class UploadIndividualExpense extends AppCompatActivity {
         String title;
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
             Bundle extras = data.getExtras();
+            //extras = getIntent().getExtras();
+
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             picture.setImageBitmap(imageBitmap);
         }
@@ -132,12 +139,28 @@ public class UploadIndividualExpense extends AppCompatActivity {
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
-                userFolder      /* directory */
+                root      /* directory */
         );
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         path=""+image.getAbsolutePath();
         return image;
+    }
+
+    public boolean hasImageCaptureBug() {
+
+        // list of known devices that have the bug
+        ArrayList<String> devices = new ArrayList<String>();
+        devices.add("android-devphone1/dream_devphone/dream");
+        devices.add("generic/sdk/generic");
+        devices.add("vodafone/vfpioneer/sapphire");
+        devices.add("tmobile/kila/dream");
+        devices.add("verizon/voles/sholes");
+        devices.add("google_ion/google_ion/sapphire");
+
+        return devices.contains(android.os.Build.BRAND + "/" + android.os.Build.PRODUCT + "/"
+                + android.os.Build.DEVICE);
+
     }
 
 }

@@ -42,7 +42,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
 
         // Check if permissions are available
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -84,15 +84,15 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        }
-        else{
-            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                Toast.makeText(this,
-                        "Need external storage", Toast.LENGTH_LONG).show();
-            }
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
-
-        }
+//        }
+//        else{
+//            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+//                Toast.makeText(this,
+//                        "Need external storage", Toast.LENGTH_LONG).show();
+//            }
+//            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
+//
+//        }
     }
 
     public void OnClickHere() {
