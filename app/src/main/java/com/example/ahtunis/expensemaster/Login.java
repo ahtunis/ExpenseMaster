@@ -34,6 +34,10 @@ public class Login extends AppCompatActivity {
     String actualUser;
     String actualUserId;
     String actualBusinessId;
+    int isAdmin;
+    String firstName;
+
+
     String userNameTxt;
     String passwordTxt;
 
@@ -68,7 +72,7 @@ public class Login extends AppCompatActivity {
             }
 
             //Test running on phone not emulator
-            startActivity(new Intent(Login.this, Selection.class));
+           // startActivity(new Intent(Login.this, Selection.class));
 
 
             //Intent i = new Intent(getApplicationContext(), Selection.class);
@@ -78,21 +82,11 @@ public class Login extends AppCompatActivity {
 
 
             // Runs in background thread !!!!!!!!!!!!!!!!!!!!
-            //new Background().execute(userNameTxt, passwordTxt);
+            new Background().execute(userNameTxt, passwordTxt);
 
         }
             }
         });
-
-//        }
-//        else{
-//            if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-//                Toast.makeText(this,
-//                        "Need external storage", Toast.LENGTH_LONG).show();
-//            }
-//            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1);
-//
-//        }
     }
 
     public void OnClickHere() {
@@ -177,9 +171,11 @@ public class Login extends AppCompatActivity {
                 JSONObject userData = root.getJSONObject("user_data");
 
                 actualPass = userData.getString("password");
-                actualUser = userData.getString("userId");
-                actualUserId = userData.getString("uid");
-                //actualBusinessId = userData.getString("businessId");
+                actualUser= userData.getString("userId");
+                actualUserId= userData.getString("uid");
+                actualBusinessId = userData.getString("businessId");
+                isAdmin = userData.getInt("isAdmin");
+                firstName = userData.getString("firstName");
 
             }
             catch(JSONException e ){
@@ -195,7 +191,11 @@ public class Login extends AppCompatActivity {
                 Intent mainPage = new Intent(Login.this, Selection.class);
                 mainPage.putExtra("userName", actualUser);
                 mainPage.putExtra("password", actualPass);
-                //mainPage.putExtra("error", err);
+                mainPage.putExtra("userId", actualUserId);
+                mainPage.putExtra("isAdmin", isAdmin);
+                mainPage.putExtra("businessId", actualBusinessId);
+                mainPage.putExtra("firstName", firstName);
+
                 startActivity(mainPage);
             }
             else{

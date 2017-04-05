@@ -1,25 +1,14 @@
 package com.example.ahtunis.expensemaster;
 
-import  com.example.ahtunis.expensemaster.UploadPicture;
 
-
-import android.Manifest;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.hardware.Camera;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -35,7 +24,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /// Class to upload individua expenses
-public class UploadIndividualExpense extends AppCompatActivity {
+public class UploadReceipt extends AppCompatActivity {
 
     ImageView picture;
     Button capture;
@@ -79,10 +68,10 @@ public class UploadIndividualExpense extends AppCompatActivity {
 
 
         if (expensePic != null){
-            if(UploadPicture.UploadBitmapToExpenseMaster(expensePic)){
+           // if(UploadPicture.UploadBitmapToExpenseMaster(expensePic)){
 
                 startActivity(new Intent(this, ViewExpenses.class));
-            }
+           // }
 
         }
         else{
@@ -167,7 +156,7 @@ public class UploadIndividualExpense extends AppCompatActivity {
     public boolean hasImageCaptureBug() {
 
         // list of known devices that have the bug
-        ArrayList<String> devices = new ArrayList<String>();
+        ArrayList<String> devices = new ArrayList<>();
         devices.add("android-devphone1/dream_devphone/dream");
         devices.add("generic/sdk/generic");
         devices.add("vodafone/vfpioneer/sapphire");

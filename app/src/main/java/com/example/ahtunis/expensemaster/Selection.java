@@ -10,16 +10,15 @@ import android.widget.TextView;
 public class Selection extends AppCompatActivity {
     String passwordString;
     String usernameString;
-    String businessId;
-    String error;
+    String businessIdString;
+    String userIdString;
+    int isAdminString;
 
     TextView userIdTxt;
-    TextView usernameTxt;
-    TextView password;
-    TextView err;
 
-    Button uploadIndividual;
-    Button uploadByTrip;
+
+    Button uploadReceipt;
+    Button uploadExpense;
     Button viewUploaded;
     Button logOut;
 
@@ -27,61 +26,43 @@ public class Selection extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_selection);
 
-        uploadIndividual = (Button) findViewById(R.id.uploadIndividual);
-        uploadByTrip = (Button) findViewById(R.id.uploadTrip);
+        uploadReceipt = (Button) findViewById(R.id.uploadIndividual);
+        uploadExpense = (Button) findViewById(R.id.uploadExpense);
         viewUploaded = (Button) findViewById(R.id.viewUploaded);
         logOut = (Button) findViewById(R.id.logoutBtn);
-
-        userIdTxt = (TextView) findViewById(R.id.userId);
-        //usernameTxt = (TextView) findViewById(R.id.userName);
-        //password = (TextView) findViewById(R.id.passWord);
-        //err = (TextView) findViewById(R.id.error);
 
 
         Intent i = getIntent();
         passwordString = i.getStringExtra("password");
         usernameString = i.getStringExtra("userName");
+        businessIdString = i.getStringExtra("businessId");
+        userIdString = i.getStringExtra("userId");
+        isAdminString = i.getIntExtra("isAdmin", isAdminString);
+        String firstName = i.getStringExtra("firstName");
+
+        userIdTxt = (TextView) findViewById(R.id.helloSelection);
+
+        userIdTxt.setText("Hello, " + firstName);
 
 
-        userIdTxt.setText(usernameString);
-       // password.setText(passwordString);
-
-        // possibly used saved instance
-//        if (savedInstanceState != null){
-//            savedInstanceState.putString(userId, userId);
-//            savedInstanceState.putString(username, username);
-//            savedInstanceState.putString(businessId, businessId);
-//
-//        }
-
-        if (savedInstanceState != null){
-            String userNameTxt = savedInstanceState.getString("userName");
-            String passwordTxt = savedInstanceState.getString("password");
-
-            userIdTxt.setText(userNameTxt);
-            usernameTxt.setText(passwordTxt);
-
-        }
-
-        // Main if information was passed
-
-       // businessIdTxt.setText(businessId);
-        //err.setText(error);
-
-        uploadIndividual.setOnClickListener(new View.OnClickListener() {
+        uploadReceipt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), UploadIndividualExpense.class));
+                Intent uploadPicture = new Intent(getApplicationContext(), UploadReceipt.class);
+                uploadPicture.putExtra("userId", userIdString);
+                startActivity(uploadPicture);
             }
         });
 
 
-        uploadByTrip.setOnClickListener(new View.OnClickListener() {
+        uploadExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), TripUpload.class));
+                Intent i = new Intent(getApplicationContext(), UploadExpense.class);
+                i.putExtra("userId", usernameString);
+                startActivity(i);
             }
         });
 
@@ -89,7 +70,9 @@ public class Selection extends AppCompatActivity {
         viewUploaded.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ViewExpenses.class));
+                Intent uploadedExpense = new Intent(getApplicationContext(), ViewExpenses.class);
+                uploadedExpense.putExtra("userId", usernameString);
+                startActivity(uploadedExpense);
             }
         });
 
@@ -101,6 +84,8 @@ public class Selection extends AppCompatActivity {
             }
         });
     }
+
+
 
 
 }

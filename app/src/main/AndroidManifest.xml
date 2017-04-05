@@ -24,9 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UploadIndividualExpense" />
+        <activity android:name=".UploadReceipt" />
         <activity android:name=".ViewExpenses" />
-        <activity android:name=".TripUpload" />
+        <activity android:name=".UploadExpense"
+            android:noHistory="true"
+            />
         <activity android:name=".Selection" />
     </application>
 
